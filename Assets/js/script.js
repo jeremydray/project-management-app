@@ -7,12 +7,13 @@ function generateTaskId() {
     const newTaskID = {
         id: crypto.randomUUID(),
     }
-    console.log(newTaskID)
 }
 
 // Todo: create a function to create a task card
 function createTaskCard(task) {
-
+    const taskCard = $('<div>');
+    const taskName = $('<div>').addClass('task-header h4').text(newTask.name);
+    const taskBody = $('div').addClass('task-body');
 
 }
 
