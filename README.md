@@ -24,8 +24,8 @@ https://jeremydray.github.io/project-management-app/
 * Font Awesome
 * DayJS version 1.11.3
 
-## **4. Webpage Sample**
+<!-- ## **4. Webpage Sample**
 ### Landing Page Sample
 ![Landing Page Sample]()<br>
-### Blog List Sample
-![Blog List Sample]()<br> 
+### Sample Task Page
+![Sample Task Page]()<br>  -->
