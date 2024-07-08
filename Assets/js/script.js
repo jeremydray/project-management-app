@@ -13,7 +13,7 @@ function pullStoredData() {
     return taskList;
 }
 
-let nextId = JSON.parse(localStorage.getItem("nextId"));
+// let nextId = JSON.parse(localStorage.getItem("nextId"));
 
 // Todo: create a function to generate a unique task id
 function generateTaskId() {
@@ -70,8 +70,20 @@ function renderTaskList() {
         }
     }
 
-    $(".draggable").draggable({ opacity: 0.7, helper: "clone", zIndex: 100 });
+    $(".draggable").draggable({
+        opacity: 0.7, zIndex: 100,
+        helper: function (e) {
+            const original = $(e.target).hasClass('ui-draggable')
+                ? $(e.target)
+                : $(e.target).closest('.ui-draggable');
+
+            return original.clone().css({
+                width: original.outerWidth(),
+            });
+        }
+    })
 }
+
 
 // Todo: create a function to handle adding a new task
 function handleAddTask(event) {
@@ -110,16 +122,42 @@ function handleDeleteTask(event) {
 
     localStorage.setItem('tasks', JSON.stringify(storedData));
     renderTaskList();
-
 }
+
 // Todo: create a function to handle dropping a task into a new status lane
 function handleDrop(event, ui) {
+    let storedData = pullStoredData();
+    console.log(storedData)
+    const currentTaskID = ui.draggable[0].taskID
+    console.log(currentTaskID);
+    const newStatus = event.target.id;
+    console.log(newStatus)
+
+    // for (let task of storedData) {
+    //     if (task.taskID === currentTaskID) {
+    //         task.taskStatus = newStatus
+    //     }
+    // }
+
+    localStorage.setItem('tasks', JSON.stringify(storedData));
+    renderTaskList();
 
 }
 
 // Todo: when the page loads, render the task list, add event listeners, make lanes droppable, and make the due date field a date picker
 $(document).ready(function () {
     renderTaskList();
+
+
     addTaskEl.on('click', handleAddTask);
+
+
+
+    $('.lane').droppable({
+        accept: '.draggable',
+        drop: handleDrop,
+    });
+
+
 
 });
