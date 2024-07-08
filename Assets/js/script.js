@@ -35,13 +35,14 @@ function createTaskCard(task) {
 
 
     const now = dayjs();
-    const taskDueDate = dayjs(task.dueDate, 'DD/MM/YYYY')
-    if (now.isSame(taskDueDate, 'day')) {
-        taskCard.addClass('bg-warning text-white');
-    } else if (now.isAfter(taskDueDate)) {
-        taskCard.addClass('bg-danger text-white');
-        cardTaskDeleteBtn.addClass('border-light')
-    }
+    const taskDueDate = dayjs(task.dueDate, 'yyyy-MM-dd')
+    if (task.taskStatus === 'done') { } else
+        if (now.isSame(taskDueDate, 'day')) {
+            taskCard.addClass('bg-warning text-white');
+        } else if (now.isAfter(taskDueDate)) {
+            taskCard.addClass('bg-danger text-white');
+            cardTaskDeleteBtn.addClass('border-light')
+        }
 
     cardTaskBody.append(cardTaskDescription, cardTaskDate, cardTaskDeleteBtn);
     taskCard.append(cardTaskName, cardTaskBody)
@@ -93,11 +94,11 @@ function handleAddTask(event) {
     const dueDate = dueDateEl.val();
     const description = taskDescriptionEl.val().trim();
     const newTask = {
+        taskID: generateTaskId(),
         name: taskName,
         dueDate: dueDate,
         description: description,
         taskStatus: 'to-do',
-        taskID: generateTaskId()
     }
 
     let taskList = pullStoredData()
@@ -128,16 +129,16 @@ function handleDeleteTask(event) {
 function handleDrop(event, ui) {
     let storedData = pullStoredData();
     console.log(storedData)
-    const currentTaskID = ui.draggable[0].taskID
+    const currentTaskID = ui.draggable[0].attributes[1].value
     console.log(currentTaskID);
     const newStatus = event.target.id;
     console.log(newStatus)
 
-    // for (let task of storedData) {
-    //     if (task.taskID === currentTaskID) {
-    //         task.taskStatus = newStatus
-    //     }
-    // }
+    for (let task of storedData) {
+        if (task.taskID === currentTaskID) {
+            task.taskStatus = newStatus
+        }
+    }
 
     localStorage.setItem('tasks', JSON.stringify(storedData));
     renderTaskList();
@@ -151,6 +152,10 @@ $(document).ready(function () {
 
     addTaskEl.on('click', handleAddTask);
 
+    $('#dueDate').datepicker({
+        changeMonth: true,
+        changeYear: true,
+    });
 
 
     $('.lane').droppable({
