@@ -132,11 +132,8 @@ function handleDeleteTask(event) {
 // Todo: create a function to handle dropping a task into a new status lane
 function handleDrop(event, ui) {
     let storedData = pullStoredData();
-    // console.log(storedData)
     const currentTaskID = ui.draggable[0].attributes[1].value
-    // console.log(currentTaskID);
     const newStatus = event.target.id;
-    // console.log(newStatus)
 
     for (let task of storedData) {
         if (task.taskID === currentTaskID) {
