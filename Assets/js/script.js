@@ -2,6 +2,7 @@ const taskTitleEl = $("#taskTitle");
 const dueDateEl = $("#dueDate");
 const taskDescriptionEl = $("#taskDescription");
 const addTaskEl = $("#form-submit");
+const hideModalEl = $("#formModal")
 
 // Retrieve tasks and nextId from localStorage
 function pullStoredData() {
@@ -89,6 +90,7 @@ function renderTaskList() {
 // Todo: create a function to handle adding a new task
 function handleAddTask(event) {
     event.preventDefault();
+    $('#formModal').modal('hide');
 
     const taskName = taskTitleEl.val().trim();
     const dueDate = dueDateEl.val();
@@ -112,6 +114,8 @@ function handleAddTask(event) {
 }
 // Todo: create a function to handle deleting a task
 function handleDeleteTask(event) {
+    event.preventDefault();
+
     const taskListId = $(this).attr('task-id');
     const storedData = pullStoredData();
 
@@ -148,7 +152,6 @@ function handleDrop(event, ui) {
 // Todo: when the page loads, render the task list, add event listeners, make lanes droppable, and make the due date field a date picker
 $(document).ready(function () {
     renderTaskList();
-
 
     addTaskEl.on('click', handleAddTask);
 
